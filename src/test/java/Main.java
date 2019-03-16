@@ -15,7 +15,7 @@ public class Main {
 
         /** Deserialization **/
         Protocol concreteProtocol = messageConverter.messageToProtocol(message);
-        concreteProtocol.execute(new User());
+        concreteProtocol.execute(new User(null));
     }
 }
 

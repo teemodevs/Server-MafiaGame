@@ -2,8 +2,8 @@ package message;
 
 import exception.io.IOStreamCloseFailureException;
 import exception.io.IOStreamOpenFailureException;
-import exception.message.MessageReadFailureException;
 import protocol.Protocol;
+import protocol.system.subprotocol.LogoutSubSystemProtocol;
 import server.ServerFrame;
 
 import java.io.*;
@@ -22,7 +22,6 @@ public class MessageSenderReceiver {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
-            this.close();
             throw new IOStreamOpenFailureException("IO Stream Open Failed");
         }
     }
@@ -37,10 +36,13 @@ public class MessageSenderReceiver {
             bodyMessageString = in.readLine();
             ServerFrame.getInstance().getTextArea().append(bodyMessageString);
         } catch (IOException e) {
-            this.close();
+            close();
         }
+
+        if (bodyMessageString == null)
+            return new LogoutSubSystemProtocol();
+
         Message message = new Message(bodyMessageString);
-        System.out.println("received Message : " + bodyMessageString);
         MessageConverter messageConverter = new MessageConverter();
         return messageConverter.messageToProtocol(message);
     }
@@ -51,14 +53,13 @@ public class MessageSenderReceiver {
     public void sendMessage(Protocol protocol) {
         MessageConverter messageConverter = new MessageConverter();
         Message message = messageConverter.protocolToMessage(protocol);
-        System.out.println("sended Message : " + message.getMessage());
         out.println(message.getMessage());
     }
 
     /**
      * Closing IO streams
      */
-    private void close() {
+    public void close() {
         try {
             this.in.close();
             this.out.close();

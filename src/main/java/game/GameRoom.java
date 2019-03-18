@@ -22,7 +22,7 @@ public class GameRoom {
         connectedUserList.put(user.getUserId(), user);
     }
 
-    public void chatToAllUser(Protocol protocol) {
+    public void sendProtocolToAllUsers(Protocol protocol) {
         for( String userId : connectedUserList.keySet() )
             connectedUserList.get(userId).sendMessage(protocol);
     }

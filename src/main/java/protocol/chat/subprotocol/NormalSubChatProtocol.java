@@ -30,6 +30,6 @@ public class NormalSubChatProtocol extends ChatProtocol {
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         System.out.println("sender : " + this.sender + ", message : " + message);
-        GameRoom.getInstance().chatToAllUser(this);
+        GameRoom.getInstance().sendProtocolToAllUsers(this);
     }
 }

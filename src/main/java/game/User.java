@@ -31,10 +31,12 @@ public class User extends Thread {
         }
     }
 
+    // 채팅
     public void sendMessage(Protocol protocol) {
         this.messageSenderReceiver.sendMessage(protocol);
     }
 
+    // 로그아웃
     public void logout() {
         this.interrupt();
     }

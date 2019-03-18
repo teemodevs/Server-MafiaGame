@@ -1,6 +1,6 @@
 package protocol.system.subprotocol;
 
-import game.ServerContext;
+import game.GameRoom;
 import game.User;
 import protocol.system.SystemProtocol;
 
@@ -50,7 +50,18 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
 
         if(this.userId.equals("u1")) // 인증하는 부분
-            ServerContext.getInstance().addUser(user.setUserId(userId));
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+        if(this.userId.equals("u2")) // 인증하는 부분
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+        if(this.userId.equals("u3")) // 인증하는 부분
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+        if(this.userId.equals("u4")) // 인증하는 부분
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+        if(this.userId.equals("u5")) // 인증하는 부분
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+        if(this.userId.equals("u6")) // 인증하는 부분
+            GameRoom.getInstance().addUser(user.setUserId(userId));
+
         this.loginFailedReason = null;
         this.isLoginSuccess = true;
         user.sendMessage(this);

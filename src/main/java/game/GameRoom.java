@@ -2,16 +2,18 @@ package game;
 
 import protocol.Protocol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameRoom {
     private static GameRoom gameRoom = new GameRoom();
 
-    private Map<String, User> connectedUserList;
+    private Map<String, User> connectedUserMap;
 
     private GameRoom() {
-        connectedUserList = new HashMap<String, User>();
+        connectedUserMap = new HashMap<String, User>();
     }
 
     public static GameRoom getInstance() {
@@ -19,11 +21,20 @@ public class GameRoom {
     }
 
     public void addUser(User user) {
-        connectedUserList.put(user.getUserId(), user);
+        connectedUserMap.put(user.getUserId(), user);
     }
 
     public void sendProtocolToAllUsers(Protocol protocol) {
-        for( String userId : connectedUserList.keySet() )
-            connectedUserList.get(userId).sendMessage(protocol);
+        for( String userId : connectedUserMap.keySet() )
+            connectedUserMap.get(userId).sendMessage(protocol);
+    }
+    
+    public List<String> getLoginUserList() {
+    	List<User> loginUserList = new ArrayList<User>(this.connectedUserMap.values());
+    	List<String> loginUserIdStringList = new ArrayList<String>();
+    	
+    	for (User user : loginUserList)
+    		loginUserIdStringList.add(user.getUserId());
+    	return loginUserIdStringList;
     }
 }

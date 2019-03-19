@@ -1,5 +1,7 @@
 package protocol.system.subprotocol;
 
+import java.util.List;
+
 import game.GameRoom;
 import game.User;
 import protocol.system.SystemProtocol;
@@ -9,8 +11,9 @@ public class LoginSubSystemProtocol extends SystemProtocol {
     private String password;
     private boolean isLoginSuccess;
     private String loginFailedReason;
+    private List<String> loginUsers; // 이미 로그인한 유저의 리스트
 
-    public String getUserId() {
+	public String getUserId() {
         return userId;
     }
 
@@ -45,6 +48,16 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         this.loginFailedReason = loginFailedReason;
         return this;
     }
+    
+    public List<String> getLoginUsers() {
+		return loginUsers;
+	}
+
+	public LoginSubSystemProtocol setLoginUsers(List<String> loginUsers) {
+		this.loginUsers = loginUsers;
+		return this;
+	}
+	
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
@@ -64,6 +77,9 @@ public class LoginSubSystemProtocol extends SystemProtocol {
 
         this.loginFailedReason = null;
         this.isLoginSuccess = true;
+        
+        this.setLoginUsers(GameRoom.getInstance().getLoginUserList());
+        
         GameRoom.getInstance().sendProtocolToAllUsers(this);
     }
 }

@@ -38,6 +38,7 @@ public class User extends Thread {
 
     // 로그아웃
     public void logout() {
+        GameRoom.getInstance().deleteUser(this);
         this.interrupt();
     }
 }

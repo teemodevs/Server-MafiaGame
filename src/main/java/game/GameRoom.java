@@ -24,14 +24,18 @@ public class GameRoom {
         connectedUserMap.put(user.getUserId(), user);
     }
 
+    public void deleteUser(User user) {
+        connectedUserMap.remove(user.getUserId());
+    }
+
     public void sendProtocolToAllUsers(Protocol protocol) {
         for( String userId : connectedUserMap.keySet() )
             connectedUserMap.get(userId).sendMessage(protocol);
     }
     
     public List<String> getLoginUserList() {
-    	List<User> loginUserList = new ArrayList<User>(this.connectedUserMap.values());
-    	List<String> loginUserIdStringList = new ArrayList<String>();
+    	List<User> loginUserList = new ArrayList<>(this.connectedUserMap.values());
+    	List<String> loginUserIdStringList = new ArrayList<>();
     	
     	for (User user : loginUserList)
     		loginUserIdStringList.add(user.getUserId());

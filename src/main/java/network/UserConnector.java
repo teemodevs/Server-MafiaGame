@@ -19,9 +19,9 @@ public class UserConnector implements Runnable {
      */
     public void run() {
         try {
-            ServerSocket server = new ServerSocket(PORT);
+        	serverSocket = new ServerSocket(PORT);
             Socket socket = null;
-            while ((socket = server.accept()) != null) {
+            while ((socket = serverSocket.accept()) != null) {
                 new User(socket).start();
             }
         } catch (IOException e) {

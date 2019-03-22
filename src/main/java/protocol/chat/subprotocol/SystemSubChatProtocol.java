@@ -1,6 +1,6 @@
 package protocol.chat.subprotocol;
 
-import game.User;
+import game.user.User;
 import protocol.chat.ChatProtocol;
 
 public class SystemSubChatProtocol extends ChatProtocol {

@@ -1,13 +1,16 @@
-package game;
+package game.user;
 
 import message.MessageSenderReceiver;
 import protocol.Protocol;
 
 import java.net.Socket;
 
-public class User extends Thread {
-    private String userId;
+import game.GameRoom;
 
+public class User extends Thread {
+    private String userId; 	// 유저  id
+    private UserGameState userGameState; // 유저 게임 상태 저장
+    
     private MessageSenderReceiver messageSenderReceiver;
 
     public User(Socket socket) {
@@ -22,8 +25,17 @@ public class User extends Thread {
         this.userId = userId;
         return this;
     }
+	
+    public UserGameState getUserGameState() {
+		return userGameState;
+	}
 
-    @Override
+	public User setUserGameState(UserGameState userGameState) {
+		this.userGameState = userGameState;
+		return this;
+	}
+
+	@Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             Protocol protocol = this.messageSenderReceiver.receiveMessage();
@@ -31,12 +43,16 @@ public class User extends Thread {
         }
     }
 
-    // 채팅
-    public void sendMessage(Protocol protocol) {
+    /**
+     * 현재 User에게 포로토콜 전송
+     **/
+    public void sendProtocol(Protocol protocol) {
         this.messageSenderReceiver.sendMessage(protocol);
     }
 
-    // 로그아웃
+    /**
+     * 해당 유저를 로그아웃처리
+     **/
     public void logout() {
         GameRoom.getInstance().deleteUser(this);
         this.interrupt();

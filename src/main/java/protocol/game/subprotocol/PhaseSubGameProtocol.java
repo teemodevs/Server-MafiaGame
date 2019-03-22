@@ -1,6 +1,6 @@
 package protocol.game.subprotocol;
 
-import game.User;
+import game.user.User;
 import protocol.game.GameProtocol;
 
 public class PhaseSubGameProtocol extends GameProtocol {

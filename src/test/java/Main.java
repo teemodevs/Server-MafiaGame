@@ -1,4 +1,4 @@
-import game.User;
+import game.user.User;
 import message.Message;
 import message.MessageConverter;
 import protocol.Protocol;

@@ -1,7 +1,7 @@
 package protocol.chat.subprotocol;
 
 import game.GameRoom;
-import game.User;
+import game.user.User;
 import protocol.chat.ChatProtocol;
 
 /**
@@ -34,6 +34,6 @@ public class NormalSubChatProtocol extends ChatProtocol {
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         System.out.println("sender : " + this.sender + ", message : " + message);
-        GameRoom.getInstance().sendProtocolToAllUsers(this);
+        GameRoom.getInstance().sendProtocol(this);
     }
 }

@@ -3,7 +3,7 @@ package protocol.system.subprotocol;
 import java.util.List;
 
 import game.GameRoom;
-import game.User;
+import game.user.User;
 import protocol.system.SystemProtocol;
 /**
  * 서버 to 클라 : 다른 유저가 로그인 한 정보를 알림
@@ -83,6 +83,6 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         
         this.setLoginUsers(GameRoom.getInstance().getLoginUserList());
         
-        GameRoom.getInstance().sendProtocolToAllUsers(this);
+        GameRoom.getInstance().sendProtocol(this);
     }
 }

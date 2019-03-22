@@ -1,6 +1,6 @@
 package protocol;
 
-import game.User;
+import game.user.User;
 
 public interface Protocol {
     ProtocolType getProtocol();

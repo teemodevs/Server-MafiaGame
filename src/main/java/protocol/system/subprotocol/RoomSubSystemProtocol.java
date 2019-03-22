@@ -1,6 +1,6 @@
 package protocol.system.subprotocol;
 
-import game.User;
+import game.user.User;
 import protocol.system.SystemProtocol;
 
 public class RoomSubSystemProtocol extends SystemProtocol {

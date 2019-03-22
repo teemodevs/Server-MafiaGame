@@ -1,10 +1,10 @@
 package network;
 
-import game.User;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import game.user.User;
 
 public class UserConnector implements Runnable {
     // 서버 접속 포트

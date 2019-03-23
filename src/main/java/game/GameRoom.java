@@ -18,7 +18,7 @@ public class GameRoom {
     private GameContext gameContext; // 게임 정보 및 로직 관련
     
     private GameRoom() {
-        connectedUserMap = new HashMap<String, User>();
+        connectedUserMap = new HashMap<>();
     }
 
     public static GameRoom getInstance() {

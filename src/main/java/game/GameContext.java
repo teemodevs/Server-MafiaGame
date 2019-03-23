@@ -6,6 +6,7 @@ import game.job.civil.Doctor;
 import game.job.civil.Police;
 import game.job.mafia.Mafia;
 import game.job.mafia.Spy;
+import game.phase.NightPhase;
 import game.user.User;
 import protocol.Protocol;
 import protocol.game.subprotocol.JobAllocationSubGameProtocol;
@@ -16,21 +17,33 @@ import java.util.List;
 
 public class GameContext {
 	private boolean isPlaying; // 현재 게임중 여부
-	private List<Job> allocableJobList;
-	private GameRoom gameRoom;
+	private List<Job> allocableJobList; // 유저에게 할당 가능한 직업 리스트
+	private GameRoom gameRoom; // 이 GameContext를 가지고 있는 GameRoom
 
-	public GameContext(GameRoom gameRoom) {
+	GameContext(GameRoom gameRoom) {
 		this.gameRoom = gameRoom;
-		this.gameInit();
 	}
 
-	private void gameInit() {
+	/**
+	 * 게임 시작
+	 **/
+	void gameStart() {
+		this.isPlaying = true; //게임중으로 표시
+		PhaseTimer phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
+		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
+		phaseTimer.setGameContext(this);
 		this.initAllocableJobList();
 		this.allocJob();
+		phaseTimer.run();
 	}
 
-	public void gameStart() {
-		this.isPlaying = true;
+	boolean isPlaying() {
+		return this.isPlaying;
+	}
+
+	public void gameOver(GameResult gameResult) {
+		this.isPlaying = false;
+		System.out.println(gameResult.getWinTeam());
 	}
 
 	/**
@@ -79,7 +92,6 @@ public class GameContext {
 			user.sendProtocol(protocol);
 			System.out.println(user.getUserId() + " : " + user.getJob().getClass().getSimpleName());
 		}
-
 	}
 	
 }

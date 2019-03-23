@@ -89,29 +89,33 @@ public class GameRoom {
         for( String userId : connectedUserMap.keySet() )
             connectedUserMap.get(userId).sendProtocol(protocol);
     }
-    
+
+	/**
+	 * 현재 GameRoom에서 로그인한 유저 리스트를 반환
+	 * */
+	public List<User> getLoginUserList() {
+		return new ArrayList<>(this.connectedUserMap.values());
+	}
+
     /**
      * 현재 GameRoom에서 로그인한 유저 id 리스트를 반환
      * @return loginUserIdStringList List<String> 현재 로그인한 유저 id 리스트
      **/
-    public List<String> getLoginUserList() {
-    	List<User> loginUserList = new ArrayList<>(this.connectedUserMap.values());
-    	List<String> loginUserIdStringList = new ArrayList<>();
+    public List<String> getLoginUserStringList() {
+    	List<User> loginUserList = getLoginUserList();
+			List<String> loginUserIdStringList = new ArrayList<>();
     	
     	for (User user : loginUserList)
     		loginUserIdStringList.add(user.getUserId());
+
     	return loginUserIdStringList;
     }
     
     /**
-     * 게임 시작, gameContext 할당
+     * 현재 GameRoom 게임 시작, gameContext 할당
      **/
     public void gameStart() {
-    	gameContext = new GameContext();
-    	this.gameContext.setPlaying(true);
-    	for( String userId : connectedUserMap.keySet() ) {
-    		User user = connectedUserMap.get(userId);
-    		System.out.println(userId);
-    	}
+    	gameContext = new GameContext(this);
+    	gameContext.gameStart();
     }
 }

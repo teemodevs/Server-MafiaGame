@@ -81,7 +81,7 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         this.loginFailedReason = null;
         this.isLoginSuccess = true;
         
-        this.setLoginUsers(GameRoom.getInstance().getLoginUserList());
+        this.setLoginUsers(GameRoom.getInstance().getLoginUserStringList());
         
         GameRoom.getInstance().sendProtocol(this);
     }

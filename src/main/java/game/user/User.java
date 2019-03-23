@@ -1,5 +1,6 @@
 package game.user;
 
+import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
 
@@ -10,7 +11,7 @@ import game.GameRoom;
 public class User extends Thread {
     private String userId; 	// 유저  id
     private UserGameState userGameState; // 유저 게임 상태 저장
-    
+    private Job job;
     private MessageSenderReceiver messageSenderReceiver;
 
     public User(Socket socket) {
@@ -35,6 +36,14 @@ public class User extends Thread {
 		return this;
 	}
 
+    public Job getJob() {
+        return job;
+    }
+
+    public User setJob(Job job) {
+        this.job = job;
+        return this;
+    }
 	@Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {

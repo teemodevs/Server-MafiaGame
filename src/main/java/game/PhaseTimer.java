@@ -1,6 +1,9 @@
 package game;
 
 import game.phase.Phase;
+import protocol.Protocol;
+import protocol.game.subprotocol.PhaseSubGameProtocol;
+import protocol.system.subprotocol.EndgameSubSystemProtocol;
 
 public class PhaseTimer extends Thread {
     private Phase phase;
@@ -26,17 +29,28 @@ public class PhaseTimer extends Thread {
         // 다음 Phase는 executeResult가 수행되는 도중 내부적으로 결정됨 (State Pattern)
         // GameContext.isPlaying 역시 executeResult가 수행되는 도중 내부적으로 결정됨
         if (gameContext.isPlaying()) {
-            this.run();
+            PhaseTimer phaseTimer = new PhaseTimer();
+            phaseTimer.setGameContext(this.gameContext);
+            phaseTimer.setPhase(this.phase);
+            phaseTimer.start();
         }
 
         // 게임이 끝난 경우
         else {
+            Protocol protocol = new EndgameSubSystemProtocol();
+            this.gameContext.getGameRoom().sendProtocol(protocol);
             System.out.println("게임 종료");
         }
     }
 
     public void setPhase(Phase phase) {
         this.phase = phase;
+
+        Protocol protocol = new PhaseSubGameProtocol()
+                                .setPhaseName(this.phase.getClass().getSimpleName());
+        System.out.println(this.phase.getClass().getSimpleName());
+        this.gameContext.getGameRoom().sendProtocol(protocol);
+
         this.remainPhaseTime = phase.getInterval();
     }
 

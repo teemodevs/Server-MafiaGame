@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import protocol.Protocol;
 import protocol.ProtocolType;
-import protocol.chat.subprotocol.*;
+import protocol.chat.subprotocol.DeadSubChatProtocol;
+import protocol.chat.subprotocol.MafiaSubChatProtocol;
+import protocol.chat.subprotocol.NormalSubChatProtocol;
+import protocol.chat.subprotocol.SystemSubChatProtocol;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")

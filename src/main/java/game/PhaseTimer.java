@@ -12,6 +12,12 @@ public class PhaseTimer extends Thread {
 
     @Override
     public void run() {
+
+        Protocol phaseProtocol = new PhaseSubGameProtocol()
+                .setPhaseName(this.phase.getClass().getSimpleName());
+        System.out.println(this.phase.getClass().getSimpleName());
+        this.gameContext.getGameRoom().sendProtocol(phaseProtocol);
+
         while (remainPhaseTime > 0) {
             try {
                 sleep(1000);
@@ -37,20 +43,14 @@ public class PhaseTimer extends Thread {
 
         // 게임이 끝난 경우
         else {
-            Protocol protocol = new EndgameSubSystemProtocol();
-            this.gameContext.getGameRoom().sendProtocol(protocol);
+            Protocol endGameProtocol = new EndgameSubSystemProtocol();
+            this.gameContext.getGameRoom().sendProtocol(endGameProtocol);
             System.out.println("게임 종료");
         }
     }
 
     public void setPhase(Phase phase) {
         this.phase = phase;
-
-        Protocol protocol = new PhaseSubGameProtocol()
-                                .setPhaseName(this.phase.getClass().getSimpleName());
-        System.out.println(this.phase.getClass().getSimpleName());
-        this.gameContext.getGameRoom().sendProtocol(protocol);
-
         this.remainPhaseTime = phase.getInterval();
     }
 

@@ -24,6 +24,10 @@ public class GameContext {
 		this.gameRoom = gameRoom;
 	}
 
+	public GameRoom getGameRoom() {
+		return this.gameRoom;
+	}
+
 	/**
 	 * 게임 시작
 	 **/
@@ -92,10 +96,6 @@ public class GameContext {
 			user.sendProtocol(protocol);
 			System.out.println(user.getUserId() + " : " + user.getJob().getClass().getSimpleName());
 		}
-	}
-
-	public GameRoom getGameRoom() {
-		return this.gameRoom;
 	}
 	
 }

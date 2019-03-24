@@ -8,6 +8,17 @@ import protocol.game.GameProtocol;
  * 클라 to 서버 : -
  **/
 public class PhaseSubGameProtocol extends GameProtocol {
+    private String phaseName;
+
+    public PhaseSubGameProtocol setPhaseName(String phaseName) {
+        this.phaseName = phaseName;
+        return this;
+    }
+
+    public String getPhaseName() {
+        return this.phaseName;
+    }
+
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

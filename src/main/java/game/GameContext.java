@@ -30,11 +30,11 @@ public class GameContext {
 	void gameStart() {
 		this.isPlaying = true; //게임중으로 표시
 		PhaseTimer phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
-		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
 		phaseTimer.setGameContext(this);
+		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
 		this.initAllocableJobList();
 		this.allocJob();
-		phaseTimer.run();
+		phaseTimer.start();
 	}
 
 	boolean isPlaying() {
@@ -92,6 +92,10 @@ public class GameContext {
 			user.sendProtocol(protocol);
 			System.out.println(user.getUserId() + " : " + user.getJob().getClass().getSimpleName());
 		}
+	}
+
+	public GameRoom getGameRoom() {
+		return this.gameRoom;
 	}
 	
 }

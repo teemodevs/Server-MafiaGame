@@ -1,10 +1,10 @@
 package protocol.system.subprotocol;
 
-import java.util.List;
-
 import game.GameRoom;
 import game.user.User;
 import protocol.system.SystemProtocol;
+
+import java.util.List;
 /**
  * 서버 to 클라 : 다른 유저가 로그인 한 정보를 알림
  * 클라 to 서버 : 해당 유저가 로그인을 요청

@@ -6,7 +6,10 @@ import protocol.Protocol;
 import protocol.system.subprotocol.LogoutSubSystemProtocol;
 import server.ServerFrame;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MessageSenderReceiver {
@@ -36,6 +39,7 @@ public class MessageSenderReceiver {
             bodyMessageString = in.readLine();
             ServerFrame.getInstance().getTextArea().append(bodyMessageString);
         } catch (IOException e) {
+            e.printStackTrace();
             close();
         }
 

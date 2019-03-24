@@ -1,12 +1,11 @@
 package game.user;
 
+import game.GameRoom;
 import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
 
 import java.net.Socket;
-
-import game.GameRoom;
 
 public class User extends Thread {
     private String userId; 	// 유저  id
@@ -44,6 +43,7 @@ public class User extends Thread {
         this.job = job;
         return this;
     }
+
 	@Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {

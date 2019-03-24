@@ -3,6 +3,10 @@ package protocol.game.subprotocol;
 import game.user.User;
 import protocol.game.GameProtocol;
 
+/**
+ * 서버 to 클라 : 유저에게 할당된 직업을 통보
+ * 클라 to 서버 : -
+ **/
 public class JobAllocationSubGameProtocol extends GameProtocol {
 
     private String jobName;

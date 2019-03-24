@@ -71,14 +71,6 @@ public class ProtocolDeSerialization {
     }
 
     /**
-     * GAME 프로토콜의 StateSubGameProtocol 프로토콜에 대한 역직렬화 테스트
-     */
-    @Test
-    public void deserialize_GAME_StateSubGameProtocol() {
-    }
-
-
-    /**
      * SYSTEM 프로토콜의 SystemProtocol 프로토콜에 대한 역직렬화 테스트
      */
     @Test
@@ -104,13 +96,6 @@ public class ProtocolDeSerialization {
      */
     @Test
     public void deserialize_SYSTEM_LogoutSubSystemProtocol() {
-    }
-
-    /**
-     * SYSTEM 프로토콜의 RoomSubSystemProtocol 프로토콜에 대한 역직렬화 테스트
-     */
-    @Test
-    public void deserialize_SYSTEM_RoomSubSystemProtocol() {
     }
 
     /**

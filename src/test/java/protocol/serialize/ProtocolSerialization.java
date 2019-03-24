@@ -70,14 +70,6 @@ public class ProtocolSerialization {
     }
 
     /**
-     * GAME 프로토콜의 StateSubGameProtocol 프로토콜에 대한 직렬화 테스트
-     */
-    @Test
-    public void serialize_GAME_StateSubGameProtocol() {
-    }
-
-
-    /**
      * SYSTEM 프로토콜의 SystemProtocol 프로토콜에 대한 직렬화 테스트
      */
     @Test
@@ -103,13 +95,6 @@ public class ProtocolSerialization {
      */
     @Test
     public void serialize_SYSTEM_LogoutSubSystemProtocol() {
-    }
-
-    /**
-     * SYSTEM 프로토콜의 RoomSubSystemProtocol 프로토콜에 대한 직렬화 테스트
-     */
-    @Test
-    public void serialize_SYSTEM_RoomSubSystemProtocol() {
     }
 
     /**

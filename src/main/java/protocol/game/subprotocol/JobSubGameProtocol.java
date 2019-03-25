@@ -8,8 +8,20 @@ import protocol.game.GameProtocol;
  * 클라 to 서버 : 해당 유저에 대한 직업 행동을 요청
  **/
 public class JobSubGameProtocol extends GameProtocol {
-    @Override
+	private String targetUserId;
+	
+    public String getTargetUserId() {
+		return targetUserId;
+	}
+
+	public JobSubGameProtocol setTargetUserId(String targetUserId) {
+		this.targetUserId = targetUserId;
+		return this;
+	}
+
+	@Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
+        System.out.println("Sender : " + user.getUserId() + ", targetId : " + this.targetUserId);
     }
 }

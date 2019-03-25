@@ -1,6 +1,5 @@
 package protocol.system.subprotocol;
 
-import game.GameRoom;
 import game.user.User;
 import protocol.system.SystemProtocol;
 
@@ -23,7 +22,7 @@ public class LogoutSubSystemProtocol extends SystemProtocol {
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
-        GameRoom.getInstance().sendProtocol(this);
+        // 유저 로그아웃 처리
         user.logout();
     }
 }

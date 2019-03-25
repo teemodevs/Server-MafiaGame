@@ -1,10 +1,8 @@
 package protocol.system.subprotocol;
 
-import game.GameRoom;
 import game.user.User;
 import protocol.system.SystemProtocol;
 
-import java.util.List;
 /**
  * 서버 to 클라 : 다른 유저가 로그인 한 정보를 알림
  * 클라 to 서버 : 해당 유저가 로그인을 요청
@@ -14,7 +12,6 @@ public class LoginSubSystemProtocol extends SystemProtocol {
     private String password;
     private boolean isLoginSuccess;
     private String loginFailedReason;
-    private List<String> loginUsers; // 이미 로그인한 유저의 리스트
 
 	public String getUserId() {
         return userId;
@@ -51,38 +48,27 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         this.loginFailedReason = loginFailedReason;
         return this;
     }
-    
-    public List<String> getLoginUsers() {
-		return loginUsers;
-	}
-
-	public LoginSubSystemProtocol setLoginUsers(List<String> loginUsers) {
-		this.loginUsers = loginUsers;
-		return this;
-	}
 	
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
 
-        if(this.userId.equals("u1")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-        if(this.userId.equals("u2")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-        if(this.userId.equals("u3")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-        if(this.userId.equals("u4")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-        if(this.userId.equals("u5")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-        if(this.userId.equals("u6")) // 인증하는 부분
-            GameRoom.getInstance().addUser(user.setUserId(userId));
-
-        this.loginFailedReason = null;
-        this.isLoginSuccess = true;
+        // 로그인 성공
+        if((this.userId.equals("u1") && this.password.equals("p1")) 
+		|| (this.userId.equals("u2") && this.password.equals("p2"))
+		|| (this.userId.equals("u3") && this.password.equals("p3"))
+		|| (this.userId.equals("u4") && this.password.equals("p4"))
+		|| (this.userId.equals("u5") && this.password.equals("p5"))
+		|| (this.userId.equals("u6") && this.password.equals("p6"))) {
+        	this.isLoginSuccess = true;
+        }
         
-        this.setLoginUsers(GameRoom.getInstance().getLoginUserStringList());
-        
-        GameRoom.getInstance().sendProtocol(this);
+        // 로그인 실패
+        else {
+        	this.isLoginSuccess = false;
+        	this.loginFailedReason = "Wrong ID or Password";        	
+        }
+        	
+        user.sendProtocol(this);
     }
 }

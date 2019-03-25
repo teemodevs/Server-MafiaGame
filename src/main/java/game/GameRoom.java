@@ -7,18 +7,15 @@ import protocol.system.subprotocol.RoomMasterSubSystemProtocol;
 import java.util.*;
 
 public class GameRoom {
-	// TODO : 현재는 싱글톤으로 되어있어 서버 하나에 게임방이 1개이지만, 이후 여러 개의 방을 생성할 수 있도록 변경
-    private static GameRoom gameRoom = new GameRoom();
-    private User roomMaster; // 방장 User
+	private int gameRoomNumber;
+	private User roomMaster; // 방장 User
     private Map<String, User> connectedUserMap; // 접속한 모든 유저의 Map
     private GameContext gameContext; // 게임 정보 및 로직 관련
     
-    private GameRoom() {
+    public GameRoom(int gameRoomNumber) {
+    	gameContext = new GameContext(this);
         connectedUserMap = new HashMap<>();
-    }
-
-    public static GameRoom getInstance() {
-        return gameRoom;
+        this.gameRoomNumber = gameRoomNumber;
     }
 
     /**
@@ -34,6 +31,13 @@ public class GameRoom {
     public User getMasterUser() {
     	return this.roomMaster;
     }
+    
+    /**
+     * 현재 GameRoom의 방 번호 리턴
+     **/
+    public int getGameRoomNumber() {
+		return gameRoomNumber;
+	}
     
     /**
      * 유저를 해당 GameRoom에 추가, 첫 유저일 경우 방장으로 지정
@@ -57,9 +61,9 @@ public class GameRoom {
     public void deleteUser(User user) {
     	this.connectedUserMap.remove(user.getUserId());
     	
-    	// 마지막 유저가 나간 경우는 roomMaster 객체를 null로 설정
+    	// 마지막 유저가 나간 경우는 GameRoom 삭제
     	if (this.connectedUserMap.size() == 0) {
-    		this.roomMaster = null;
+    		GameRoomManager.getInstance().deleteGameRoom(this);
     		return;
     	}
     	
@@ -108,10 +112,13 @@ public class GameRoom {
     }
     
     /**
-     * 현재 GameRoom 게임 시작, gameContext 할당
+     * 현재 GameRoom 게임 시작
      **/
     public void gameStart() {
-    	gameContext = new GameContext(this);
     	gameContext.gameStart();
+    }
+    
+    public boolean isPlaying() {
+    	return gameContext.isPlaying();
     }
 }

@@ -13,7 +13,7 @@ public class StartgameSubSystemProtocol extends SystemProtocol {
 	@Override
 	public void execute(User user) {
 		System.out.println(this.getClass().getSimpleName() + ".execute()");
-		GameRoom gameRoom = GameRoom.getInstance();
+		GameRoom gameRoom = user.getGameRoom();
 
 		if (gameRoom.getPlayerCount() >= 3) {
 			gameRoom.sendProtocol(this);

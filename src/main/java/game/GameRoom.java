@@ -44,6 +44,7 @@ public class GameRoom {
      **/
     public void addUser(User user) {
     	connectedUserMap.put(user.getUserId(), user);
+    	user.setGameRoom(this);
     	
     	// 첫 유저인 경우 방장으로 선정
     	if (connectedUserMap.size() == 1) {
@@ -118,6 +119,9 @@ public class GameRoom {
     	gameContext.gameStart();
     }
     
+    /**
+     * 현재 GameRoom 게임중 여부
+     **/
     public boolean isPlaying() {
     	return gameContext.isPlaying();
     }

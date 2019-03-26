@@ -16,8 +16,9 @@ import protocol.system.subprotocol.*;
         @JsonSubTypes.Type(value = StartgameSubSystemProtocol.class, 		name = "STARTGAME"),
         @JsonSubTypes.Type(value = RoomMasterSubSystemProtocol.class, 		name = "ROOMMASTER"),
         @JsonSubTypes.Type(value = StartgameFailedSubSystemProtocol.class, 	name = "STARTGAMEFAIL"),
-        @JsonSubTypes.Type(value = GameRoomSubSystemProtocol.class, 		name = "GAMEROOMLIST"),
-        @JsonSubTypes.Type(value = JoinGameRoomSubSystemProtocol.class, 	name = "JOINGAMEROOM")
+        @JsonSubTypes.Type(value = GameRoomListSubSystemProtocol.class, 	name = "GAMEROOMLIST"),
+        @JsonSubTypes.Type(value = JoinGameRoomSubSystemProtocol.class, 	name = "JOINGAMEROOM"),
+        @JsonSubTypes.Type(value = GameRoomMakeSubSystemProtocol.class, 	name = "MAKEGAMEROOM")
 })
 public abstract class SystemProtocol implements Protocol {
     @Override

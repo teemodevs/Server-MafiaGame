@@ -7,6 +7,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 서버 구동 시 기본적으로 뜨는 창
+ */
 public class ServerFrame extends JFrame {
     private static ServerFrame serverFrame = new ServerFrame();
     private JTextArea textArea;
@@ -22,6 +25,7 @@ public class ServerFrame extends JFrame {
     public static ServerFrame getInstance() {
         return serverFrame;
     }
+    
     /**
      * boot Server with GUI
      */
@@ -57,7 +61,7 @@ public class ServerFrame extends JFrame {
     }
 
     /**
-     * Server Start Action Listener
+     * 서버 시작 액션 : 서버 소켓을 생성하고 유저 커넥션을 받아들임
      */
     class ServerStartAction implements ActionListener {
         // 버튼 클릭하면 유저를 받기 시작

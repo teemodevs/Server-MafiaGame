@@ -25,10 +25,11 @@ public class GameRoomManager {
 		
 		GameRoom newGameRoom = null;
 		
-		for (int index = 0; index < this.gameRoomMap.size(); index++) {
+		for (int index = 0; index <= this.gameRoomMap.size(); index++) {
 			if (!this.gameRoomMap.containsKey(index)) {
 				newGameRoom = new GameRoom(index);
 				this.gameRoomMap.put(index, newGameRoom);
+				break;
 			}
 		}
 		
@@ -60,7 +61,7 @@ public class GameRoomManager {
 	/**
 	 * 참가할 방에 대한 정보를 리턴
 	 **/
-	public GameRoom joinGameRoom(int gameRoomNumber) {
+	public GameRoom getGameRoom(int gameRoomNumber) {
 		return this.gameRoomMap.get(gameRoomNumber);
 	}
 }

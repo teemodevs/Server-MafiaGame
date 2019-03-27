@@ -1,21 +1,24 @@
 package game;
 
 import game.phase.Phase;
+
 import protocol.Protocol;
 import protocol.game.subprotocol.PhaseSubGameProtocol;
 import protocol.system.subprotocol.EndgameSubSystemProtocol;
 
+/**
+ * Phase를 진행시키는 스레드 타이머 클래스 
+ */
 public class PhaseTimer extends Thread {
-    private Phase phase;
-    private GameContext gameContext;
-    private int remainPhaseTime; // 남은 Phase 시간 (초 단위)
+    private Phase 		phase;			 // 현재 진행되고 있는 Phase
+    private GameContext gameContext;	 // 현재 진행중인 게임 1판에 대한 정보를 가지는 클래스
+    private int 		remainPhaseTime; // 남은 Phase 시간 (초 단위)
 
     @Override
     public void run() {
 
         Protocol phaseProtocol = new PhaseSubGameProtocol()
                 .setPhaseName(this.phase.getClass().getSimpleName());
-        System.out.println(this.phase.getClass().getSimpleName());
         this.gameContext.getGameRoom().sendProtocol(phaseProtocol);
 
         while (remainPhaseTime > 0) {

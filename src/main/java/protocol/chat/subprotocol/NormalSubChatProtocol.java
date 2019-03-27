@@ -29,6 +29,9 @@ public class NormalSubChatProtocol extends ChatProtocol {
         return this;
     }
 
+    /**
+     * 메시지를 보낸 유저가 들어가있는 방의 모든 유저에게, 메시지를 보낸 유저가 메시지를 보냈다고 알림 
+     */
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

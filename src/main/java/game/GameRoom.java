@@ -6,6 +6,9 @@ import protocol.system.subprotocol.RoomMasterSubSystemProtocol;
 
 import java.util.*;
 
+/**
+ * 게임방 클래스
+ */
 public class GameRoom {
 	private int gameRoomNumber;
 	private User roomMaster; // 방장 User
@@ -20,28 +23,28 @@ public class GameRoom {
 
     /**
      * 현재 GameRoom에 접속된 유저 수를 리턴
-     **/
+     */
     public int getPlayerCount() {
     	return connectedUserMap.size();
     }
     
     /**
      * 현재 GameRoom의 방장 User 객체 리턴
-     **/
+     */
     public User getMasterUser() {
     	return this.roomMaster;
     }
     
     /**
      * 현재 GameRoom의 방 번호 리턴
-     **/
+     */
     public int getGameRoomNumber() {
 		return gameRoomNumber;
 	}
     
     /**
      * 유저를 해당 GameRoom에 추가, 첫 유저일 경우 방장으로 지정
-     **/
+     */
     public void addUser(User user) {
     	connectedUserMap.put(user.getUserId(), user);
     	user.setGameRoom(this);
@@ -58,7 +61,7 @@ public class GameRoom {
 
     /**
      * 유저를 해당 GameRoom에서 삭제, 방장이 나간 경우 방장 재설정
-     **/
+     */
     public void deleteUser(User user) {
     	this.connectedUserMap.remove(user.getUserId());
     	
@@ -85,7 +88,7 @@ public class GameRoom {
 
     /**
      * 모든 유저에게 Protocol을 전송
-     **/
+     */
     public void sendProtocol(Protocol protocol) {
         for( String userId : connectedUserMap.keySet() )
             connectedUserMap.get(userId).sendProtocol(protocol);
@@ -93,7 +96,7 @@ public class GameRoom {
 
 	/**
 	 * 현재 GameRoom에서 로그인한 유저 리스트를 반환
-	 * */
+	 */
 	public List<User> getLoginUserList() {
 		return new ArrayList<>(this.connectedUserMap.values());
 	}
@@ -101,7 +104,7 @@ public class GameRoom {
     /**
      * 현재 GameRoom에서 로그인한 유저 id 리스트를 반환
      * @return loginUserIdStringList List<String> 현재 로그인한 유저 id 리스트
-     **/
+     */
     public List<String> getLoginUserStringList() {
     	List<User> loginUserList = getLoginUserList();
 			List<String> loginUserIdStringList = new ArrayList<>();
@@ -114,14 +117,14 @@ public class GameRoom {
     
     /**
      * 현재 GameRoom 게임 시작
-     **/
+     */
     public void gameStart() {
     	gameContext.gameStart();
     }
     
     /**
      * 현재 GameRoom 게임중 여부
-     **/
+     */
     public boolean isPlaying() {
     	return gameContext.isPlaying();
     }

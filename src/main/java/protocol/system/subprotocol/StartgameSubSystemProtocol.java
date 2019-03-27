@@ -10,6 +10,10 @@ import protocol.system.SystemProtocol;
  * 클라 to 서버 : 게임시작요청(RoomMaster만 요청 가능)
  */
 public class StartgameSubSystemProtocol extends SystemProtocol {
+	
+	/**
+	 * 인원 수를 계산해서 게임을 시작 시도, 3명 이상 게임 시작 가능, 게임 시작 불가 시 방장에게 알림
+	 */
 	@Override
 	public void execute(User user) {
 		System.out.println(this.getClass().getSimpleName() + ".execute()");

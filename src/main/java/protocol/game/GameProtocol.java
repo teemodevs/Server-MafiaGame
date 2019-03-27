@@ -10,6 +10,9 @@ import protocol.game.subprotocol.JobSubGameProtocol;
 import protocol.game.subprotocol.PhaseSubGameProtocol;
 import protocol.game.subprotocol.ResultSubGameProtocol;
 
+/**
+ * 게임 관련 프로토콜 추상화 클래스
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({

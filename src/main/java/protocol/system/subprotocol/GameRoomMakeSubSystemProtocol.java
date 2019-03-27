@@ -10,8 +10,8 @@ import protocol.system.SystemProtocol;
  * 클라 to 서버 : 서버에 새로운 방 만들기 요청
  */
 public class GameRoomMakeSubSystemProtocol extends SystemProtocol {
-
-	private int newGameRoomNumber;
+	
+	private int newGameRoomNumber; // 만들어진 방 번호
 	
     public int getNewGameRoomNumber() {
 		return newGameRoomNumber;
@@ -21,6 +21,9 @@ public class GameRoomMakeSubSystemProtocol extends SystemProtocol {
 		this.newGameRoomNumber = newGameRoomNumber;
 	}
 
+	/**
+	 * 방을 만든 후, 만들어진 방 번호를 클라이언트에게 전송
+	 */
 	@Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

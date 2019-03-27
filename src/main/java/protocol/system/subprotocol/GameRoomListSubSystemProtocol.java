@@ -11,7 +11,7 @@ import protocol.system.SystemProtocol;
  * 클라 to 서버 : 현재 서버에 접속 가능한 GameRoom의 리스트를 요청
  */
 public class GameRoomListSubSystemProtocol extends SystemProtocol {
-	private List<Integer> gameRoomNumberList;
+	private List<Integer> gameRoomNumberList; // 입장 가능한 게임방 번호의 리스트
 	
 	public List<Integer> getGameRoomNumberList() {
 		return gameRoomNumberList;
@@ -22,6 +22,9 @@ public class GameRoomListSubSystemProtocol extends SystemProtocol {
 		this.gameRoomNumberList = gameRoomNumberList;
 	}
 	
+	/**
+	 * 입장 가능한 게임방의 리스트를 구해서 클라이언트에 전송
+	 */
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

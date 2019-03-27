@@ -49,6 +49,9 @@ public class LoginSubSystemProtocol extends SystemProtocol {
         return this;
     }
 	
+    /**
+     * 로그인 처리
+     */
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

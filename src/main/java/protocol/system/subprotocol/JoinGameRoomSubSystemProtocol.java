@@ -1,7 +1,5 @@
 package protocol.system.subprotocol;
 
-import java.util.List;
-
 import game.GameRoom;
 import game.GameRoomManager;
 import game.user.User;
@@ -16,7 +14,6 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 	private int 			gameRoomNumber;		// 유저가 요청한 방의 번호
 	private boolean 		isJoinSuccess;		// 게임방 입장 성공 여부
 	private String 			joinFailedReason;	// 게임방 입장 실패 시 이유
-	private List<String> 	loginUsers; 		// 입장한 게임방에 이미 로그인한 유저의 리스트
 	
 	public String getUserId() {
 		return userId;
@@ -54,15 +51,6 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
 		return this;
 	}
 
-	public List<String> getLoginUsers() {
-		return loginUsers;
-	}
-
-	public JoinGameRoomSubSystemProtocol setLoginUsers(List<String> loginUsers) {
-		this.loginUsers = loginUsers;
-		return this;
-	}
-
 	/**
 	 * 클라이언트에서 전송한 게임방 번호를 기반으로 찾아서 들어갈 수 있는 상황이면  들어가게 처리한다음 결과를 클라이언트에 통보
 	 * 게임방이 없는 경우, 플레이중인 경우, 풀방인 경우 입장 불가
@@ -92,10 +80,9 @@ public class JoinGameRoomSubSystemProtocol extends SystemProtocol {
         if (this.isJoinSuccess) {
 	        gameRoom.addUser(user);
 	        this.userId = user.getUserId();
-	        this.setLoginUsers(gameRoom.getLoginUserStringList());
         }
         
-        gameRoom.sendProtocol(this);
+        user.sendProtocol(this);
         
     }
 }

@@ -49,14 +49,29 @@ public class GameRoom {
     	connectedUserMap.put(user.getUserId(), user);
     	user.setGameRoom(this);
     	
-    	// 첫 유저인 경우 방장으로 선정
+    	this.notifyIfMaster(user);
+    	
+    }
+    
+    private void notifyToAllUsers() {
+    	for(String userId : this.connectedUserMap.keySet()) {
+    		User user = this.connectedUserMap.get(userId);
+    		
+    		Protocol protocol = new User();
+    		user.sendProtocol(protocol);
+    	}
+    }
+    
+    /**
+     * 처음 입장한 유저인 경우 방장이라고 알림 
+     */
+    private void notifyIfMaster(User user) {
     	if (connectedUserMap.size() == 1) {
     		this.roomMaster = user;
     		Protocol protocol = new RoomMasterSubSystemProtocol()
     								.setMasterId(user.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}
-    	
     }
 
     /**

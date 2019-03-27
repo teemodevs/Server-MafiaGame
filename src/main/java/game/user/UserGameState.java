@@ -2,8 +2,11 @@ package game.user;
 
 import game.job.Job;
 
+/**
+ * 특정 유저의 게임 상태를 저장
+ */
 public class UserGameState {
-	private Job job; 		// 유저 직업
+	private Job 	job; 	// 유저 직업
 	private boolean alive;  // 현재 살아있는지 죽어있는지 여부
 	
 	public UserGameState() {

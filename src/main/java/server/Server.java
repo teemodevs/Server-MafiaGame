@@ -1,7 +1,6 @@
 package server;
 
 public class Server {
-
     /**
      * EntryPoint of the MafiaGameServer
      */

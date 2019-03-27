@@ -4,10 +4,10 @@ import game.user.User;
 import protocol.chat.ChatProtocol;
 
 /**
- * 서버 to 클라 : 유저에게 시스템 채팅을 전달
- * 클라 to 서버 : -
- **/
-public class SystemSubChatProtocol extends ChatProtocol {
+ * 서버 to 클라 : 다른 유저가 채팅한 정보를 알림 (마피아 유저에게만 전송)
+ * 클라 to 서버 : 해당 유저가 채팅을 보냄
+ */
+public class MafiaChatProtocol extends ChatProtocol {
     @Override
     public void execute(User user) {
         System.out.println(this.getClass().getSimpleName() + ".execute()");

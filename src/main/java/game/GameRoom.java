@@ -2,7 +2,8 @@ package game;
 
 import game.user.User;
 import protocol.Protocol;
-import protocol.system.subprotocol.RoomMasterSubSystemProtocol;
+import protocol.system.subprotocol.RoomMasterProtocol;
+import protocol.system.subprotocol.UserJoinNotifyProtocol;
 
 import java.util.*;
 
@@ -48,15 +49,34 @@ public class GameRoom {
     public void addUser(User user) {
     	connectedUserMap.put(user.getUserId(), user);
     	user.setGameRoom(this);
+
+    	this.notifyIfMaster(user);
+    	this.notifyToAllUsers(user);
     	
-    	// 첫 유저인 경우 방장으로 선정
+    }
+
+    /**
+	 * 특정 방에 존재하는 모든 유저에게 특정 유저가 들어왔다는 것을 알림
+	 * */
+    private void notifyToAllUsers(User joinedUser) {
+    	for(String userId : this.connectedUserMap.keySet()) {
+    		User user = this.connectedUserMap.get(userId);
+    		Protocol protocol = new UserJoinNotifyProtocol()
+								.setUserId(joinedUser.getUserId());
+    		user.sendProtocol(protocol);
+    	}
+    }
+    
+    /**
+     * 처음 입장한 유저인 경우 방장이라고 알림 
+     */
+    private void notifyIfMaster(User user) {
     	if (connectedUserMap.size() == 1) {
     		this.roomMaster = user;
-    		Protocol protocol = new RoomMasterSubSystemProtocol()
+    		Protocol protocol = new RoomMasterProtocol()
     								.setMasterId(user.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}
-    	
     }
 
     /**
@@ -79,7 +99,7 @@ public class GameRoom {
     		
     		this.roomMaster = this.connectedUserMap.get(randomUserKey);
     		
-    		Protocol protocol = new RoomMasterSubSystemProtocol()
+    		Protocol protocol = new RoomMasterProtocol()
 					.setMasterId(user.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}

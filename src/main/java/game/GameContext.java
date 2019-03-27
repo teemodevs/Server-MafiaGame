@@ -9,7 +9,7 @@ import game.job.mafia.Spy;
 import game.phase.NightPhase;
 import game.user.User;
 import protocol.Protocol;
-import protocol.game.subprotocol.JobAllocationSubGameProtocol;
+import protocol.game.subprotocol.JobAllocationProtocol;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,7 +104,7 @@ public class GameContext {
 		for (User user : loginUserList) {
 			Job job = this.allocableJobList.remove(0);
 			user.setJob(job);
-			Protocol protocol = new JobAllocationSubGameProtocol().setJobName(job.getClass().getSimpleName());
+			Protocol protocol = new JobAllocationProtocol().setJobName(job.getClass().getSimpleName());
 			user.sendProtocol(protocol);
 			System.out.println(user.getUserId() + " : " + user.getJob().getClass().getSimpleName());
 		}

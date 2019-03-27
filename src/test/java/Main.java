@@ -2,11 +2,11 @@ import game.user.User;
 import message.Message;
 import message.MessageConverter;
 import protocol.Protocol;
-import protocol.chat.subprotocol.NormalSubChatProtocol;
+import protocol.chat.subprotocol.NormalChatProtocol;
 
 public class Main {
     public static void main(String[] args) {
-        Protocol protocol1 = new NormalSubChatProtocol();
+        Protocol protocol1 = new NormalChatProtocol();
         MessageConverter messageConverter = new MessageConverter();
 
         /** Serialization **/

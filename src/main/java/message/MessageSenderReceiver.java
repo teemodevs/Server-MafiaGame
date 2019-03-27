@@ -3,7 +3,7 @@ package message;
 import exception.io.IOStreamCloseFailureException;
 import exception.io.IOStreamOpenFailureException;
 import protocol.Protocol;
-import protocol.system.subprotocol.LogoutSubSystemProtocol;
+import protocol.system.subprotocol.LogoutProtocol;
 import server.ServerFrame;
 
 import java.io.BufferedReader;
@@ -44,7 +44,7 @@ public class MessageSenderReceiver {
         }
 
         if (bodyMessageString == null)
-            return new LogoutSubSystemProtocol();
+            return new LogoutProtocol();
 
         Message message = new Message(bodyMessageString);
         MessageConverter messageConverter = new MessageConverter();

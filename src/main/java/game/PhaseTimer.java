@@ -3,8 +3,8 @@ package game;
 import game.phase.Phase;
 
 import protocol.Protocol;
-import protocol.game.subprotocol.PhaseSubGameProtocol;
-import protocol.system.subprotocol.EndgameSubSystemProtocol;
+import protocol.game.subprotocol.PhaseProtocol;
+import protocol.system.subprotocol.EndgameProtocol;
 
 /**
  * Phase를 진행시키는 스레드 타이머 클래스 
@@ -17,7 +17,7 @@ public class PhaseTimer extends Thread {
     @Override
     public void run() {
 
-        Protocol phaseProtocol = new PhaseSubGameProtocol()
+        Protocol phaseProtocol = new PhaseProtocol()
                 .setPhaseName(this.phase.getClass().getSimpleName());
         this.gameContext.getGameRoom().sendProtocol(phaseProtocol);
 
@@ -46,7 +46,7 @@ public class PhaseTimer extends Thread {
 
         // 게임이 끝난 경우
         else {
-            Protocol endGameProtocol = new EndgameSubSystemProtocol();
+            Protocol endGameProtocol = new EndgameProtocol();
             this.gameContext.getGameRoom().sendProtocol(endGameProtocol);
             System.out.println("게임 종료");
         }

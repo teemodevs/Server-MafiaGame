@@ -2,7 +2,7 @@ package game;
 
 import game.user.User;
 import protocol.Protocol;
-import protocol.system.subprotocol.RoomMasterSubSystemProtocol;
+import protocol.system.subprotocol.RoomMasterProtocol;
 
 import java.util.*;
 
@@ -68,7 +68,7 @@ public class GameRoom {
     private void notifyIfMaster(User user) {
     	if (connectedUserMap.size() == 1) {
     		this.roomMaster = user;
-    		Protocol protocol = new RoomMasterSubSystemProtocol()
+    		Protocol protocol = new RoomMasterProtocol()
     								.setMasterId(user.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}
@@ -94,7 +94,7 @@ public class GameRoom {
     		
     		this.roomMaster = this.connectedUserMap.get(randomUserKey);
     		
-    		Protocol protocol = new RoomMasterSubSystemProtocol()
+    		Protocol protocol = new RoomMasterProtocol()
 					.setMasterId(user.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}

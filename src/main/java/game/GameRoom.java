@@ -3,6 +3,7 @@ package game;
 import game.user.User;
 import protocol.Protocol;
 import protocol.system.subprotocol.RoomMasterProtocol;
+import protocol.system.subprotocol.UserJoinNotifyProtocol;
 
 import java.util.*;
 
@@ -48,16 +49,20 @@ public class GameRoom {
     public void addUser(User user) {
     	connectedUserMap.put(user.getUserId(), user);
     	user.setGameRoom(this);
-    	
+
     	this.notifyIfMaster(user);
+    	this.notifyToAllUsers(user);
     	
     }
-    
-    private void notifyToAllUsers() {
+
+    /**
+	 * 특정 방에 존재하는 모든 유저에게 특정 유저가 들어왔다는 것을 알림
+	 * */
+    private void notifyToAllUsers(User joinedUser) {
     	for(String userId : this.connectedUserMap.keySet()) {
     		User user = this.connectedUserMap.get(userId);
-    		
-    		Protocol protocol = new User();
+    		Protocol protocol = new UserJoinNotifyProtocol()
+								.setUserId(joinedUser.getUserId());
     		user.sendProtocol(protocol);
     	}
     }

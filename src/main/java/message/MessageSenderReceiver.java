@@ -63,7 +63,7 @@ public class MessageSenderReceiver {
     /**
      * Closing IO streams
      */
-    public void close() {
+    void close() {
         try {
             this.in.close();
             this.out.close();

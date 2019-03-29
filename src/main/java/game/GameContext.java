@@ -110,4 +110,19 @@ public class GameContext {
 		}
 	}
 	
+	/**
+	 * 생존한 유저의 리스트를 반환
+	 * @return survivorUserList List<User> 생존한 유저의 리스트
+	 * */
+	public List<User> getSurvivorUserList() {
+		List<User> survivorUserList = new ArrayList<>();
+		
+		for (User user : this.getGameRoom().getLoginUserList()) {
+			if (user.isAlive())
+				survivorUserList.add(user);
+		}
+		
+		return survivorUserList;
+	}
+	
 }

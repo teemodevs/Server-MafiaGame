@@ -15,7 +15,6 @@ public class User extends Thread {
 	private GameRoom 				gameRoom; 				// 유저가 접속한 GameRoom
     private String 					userId; 				// 유저  id
     private UserGameState 			userGameState; 			// 유저 게임 상태 저장
-    private Job 					job;					// 현재 유저 직업
     private MessageSenderReceiver 	messageSenderReceiver;	// 메시시 송수신용
 
     public User(Socket socket) {
@@ -49,11 +48,11 @@ public class User extends Thread {
 	}
 
     public Job getJob() {
-        return job;
+        return userGameState.getJob();
     }
 
     public User setJob(Job job) {
-        this.job = job;
+        this.userGameState.setJob(job);
         return this;
     }
 

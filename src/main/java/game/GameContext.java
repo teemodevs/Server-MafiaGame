@@ -2,9 +2,11 @@ package game;
 
 import game.job.Job;
 import game.job.civil.Civil;
+import game.job.civil.CivilTeam;
 import game.job.civil.Doctor;
 import game.job.civil.Police;
 import game.job.mafia.Mafia;
+import game.job.mafia.MafiaTeam;
 import game.job.mafia.Spy;
 import game.phase.NightPhase;
 import game.user.User;
@@ -13,6 +15,7 @@ import protocol.game.subprotocol.JobAllocationProtocol;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -23,6 +26,7 @@ public class GameContext {
 	private boolean 	isPlaying; 			// 현재 게임중 여부
 	private List<Job> 	allocableJobList; 	// 유저에게 할당 가능한 직업 리스트
 	private GameRoom 	gameRoom; 			// 해당 GameContext를 가지고 있는 GameRoom
+	private PhaseTimer 	phaseTimer;			// Phase를 진행시키는 타이머
 
 	GameContext(GameRoom gameRoom) {
 		this.gameRoom = gameRoom;
@@ -32,12 +36,15 @@ public class GameContext {
 		return this.gameRoom;
 	}
 
+	public void setPhaseTimer(PhaseTimer phaseTimer) {
+		this.phaseTimer = phaseTimer;
+	}
 	/**
 	 * 게임 시작
 	 */
 	void gameStart() {
 		this.isPlaying = true; //게임중으로 표시
-		PhaseTimer phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
+		phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
 		phaseTimer.setGameContext(this);
 		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
 		this.initAllocableJobList();
@@ -57,9 +64,34 @@ public class GameContext {
 	 * 게임 종료 처리
 	 * @param gameResult GameResult 게임 결과정보를 담은 객체 
 	 */
-	public void gameOver(GameResult gameResult) {
+	private void gameOver(GameResult gameResult) {
 		this.isPlaying = false;
-		System.out.println(gameResult.getWinTeam());
+	}
+
+	/**
+	 * 게임 종료 여부 확인
+	 */
+	public boolean checkGameOver() {
+		// 생존자의 수를 구함
+		List<User> survivorUserList = this.gameRoom.getGameContext().getSurvivorUserList();
+
+		// 마피아 팀 생존자 수와 시민 팀 생존자 수
+		int mafiaTeamSurvivorCount = 0;
+		int civilTeamSurvivorCount = 0;
+
+		for (User user : survivorUserList) {
+			Job userJob = user.getJob();
+			if (userJob instanceof CivilTeam) civilTeamSurvivorCount++;
+			if (userJob instanceof MafiaTeam) mafiaTeamSurvivorCount++;
+		}
+
+		// 마피아 팀 생존자 수 >= 시민 팀 생존자 수 인 경우 게임종료
+		if(mafiaTeamSurvivorCount >= civilTeamSurvivorCount) {
+			this.gameOver(new GameResult());
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -106,7 +138,6 @@ public class GameContext {
 			user.setJob(job);
 			Protocol protocol = new JobAllocationProtocol().setJobName(job.getClass().getSimpleName());
 			user.sendProtocol(protocol);
-			System.out.println(user.getUserId() + " : " + user.getJob().getClass().getSimpleName());
 		}
 	}
 	
@@ -124,5 +155,31 @@ public class GameContext {
 		
 		return survivorUserList;
 	}
-	
+
+	/**
+	 * Phase에 따라 유저 선택 시 작업을 진행
+	 * @param selectUser User 다른 유저를 선택한 유저 객체
+	 * @param targetUserId String 지목당한 유저의 Id
+	 */
+	public void selectionUser(User selectUser, String targetUserId) {
+		this.phaseTimer.getPhase().selectUserExecute(selectUser, targetUserId);
+	}
+
+	/**
+	 * 생존자 중 가장 많은 마피아 투표 수를 얻은 유저 반환
+	 */
+	public User getMostMafiaVotedUser() {
+		return Collections.max(this.getSurvivorUserList(), new MaxVoteCountUserComparator());
+	}
+
+	/**
+	 * 투표 받은 득표수를 기준으로 비교하는 Custom Comparator
+	 */
+	class MaxVoteCountUserComparator implements Comparator<User> {
+		@Override
+		public int compare(User o1, User o2) {
+			return o1.getUserGameState().getVoteContext().getMafiaVotedCount()
+					- o2.getUserGameState().getVoteContext().getMafiaVotedCount();
+		}
+	}
 }

@@ -4,6 +4,7 @@ import game.GameRoom;
 import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
+import protocol.game.subprotocol.UserDeadProtocol;
 import protocol.system.subprotocol.LogoutProtocol;
 
 import java.net.Socket;
@@ -19,6 +20,7 @@ public class User extends Thread {
 
     public User(Socket socket) {
         this.messageSenderReceiver = new MessageSenderReceiver(socket);
+        this.userGameState = new UserGameState();
     }
 
     public void setGameRoom(GameRoom gameRoom) {
@@ -42,16 +44,12 @@ public class User extends Thread {
 		return userGameState;
 	}
 
-	public User setUserGameState(UserGameState userGameState) {
-		this.userGameState = userGameState;
-		return this;
-	}
-
     public Job getJob() {
         return userGameState.getJob();
     }
 
     public User setJob(Job job) {
+        job.setUser(this);
         this.userGameState.setJob(job);
         return this;
     }
@@ -87,5 +85,14 @@ public class User extends Thread {
     	}
     	
         this.interrupt();
+    }
+
+    /**
+     * 유저 죽음 처리
+     */
+    public void dead() {
+        this.getUserGameState().setAlive(false);
+        Protocol protocol = new UserDeadProtocol().setKilledUserId(this.getUserId());
+        this.gameRoom.sendProtocol(protocol);
     }
 }

@@ -1,6 +1,7 @@
 package game.phase;
 
 import game.PhaseTimer;
+import game.user.User;
 
 /**
  * 아침 Phase
@@ -28,6 +29,14 @@ public class MorningPhase implements Phase {
     public void executeResult(PhaseTimer phaseTimer) {
         System.out.println(this.getClass().getSimpleName() + ". executeResult()");
         phaseTimer.setPhase(MafiaVotePhase.getInstance());
+    }
+
+    /**
+     * 아침에는 별다른 작업을 하지 않음
+     */
+    @Override
+    public void selectUserExecute(User user, String targetUserId) {
+        System.out.println(this.getClass().getSimpleName() + ".selectUserExecute() " + user.getUserId() + ", " + targetUserId);
     }
 
 }

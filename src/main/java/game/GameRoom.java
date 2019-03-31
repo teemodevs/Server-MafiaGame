@@ -22,6 +22,10 @@ public class GameRoom {
         this.gameRoomNumber = gameRoomNumber;
     }
 
+	public GameContext getGameContext() {
+		return this.gameContext;
+	}
+
     /**
      * 현재 GameRoom에 접속된 유저 수를 리턴
      */
@@ -106,6 +110,9 @@ public class GameRoom {
         
     }
 
+    public User getUserById(String userId) {
+    	return this.connectedUserMap.get(userId);
+	}
     /**
      * 모든 유저에게 Protocol을 전송
      */
@@ -120,20 +127,6 @@ public class GameRoom {
 	public List<User> getLoginUserList() {
 		return new ArrayList<>(this.connectedUserMap.values());
 	}
-
-    /**
-     * 현재 GameRoom에서 로그인한 유저 id 리스트를 반환
-     * @return loginUserIdStringList List<String> 현재 로그인한 유저 id 리스트
-     */
-    public List<String> getLoginUserStringList() {
-    	List<User> loginUserList = getLoginUserList();
-			List<String> loginUserIdStringList = new ArrayList<>();
-    	
-    	for (User user : loginUserList)
-    		loginUserIdStringList.add(user.getUserId());
-
-    	return loginUserIdStringList;
-    }
     
     /**
      * 현재 GameRoom 게임 시작

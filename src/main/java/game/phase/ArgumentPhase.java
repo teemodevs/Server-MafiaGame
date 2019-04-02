@@ -5,7 +5,7 @@ import game.user.User;
 
 /**
  * 최후의 변론 Phase
- **/
+ */
 public class ArgumentPhase implements Phase {
     private static final int PHASE_INTERVAL_SECONDS = 5;
     private static ArgumentPhase argumentPhase = new ArgumentPhase();

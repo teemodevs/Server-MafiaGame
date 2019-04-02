@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * 처형 찬반 투표 Phase
- **/
+ */
 public class ExecuteVotePhase implements Phase {
     private static final int PHASE_INTERVAL_SECONDS = 5;
     private static ExecuteVotePhase executeVotePhase = new ExecuteVotePhase();

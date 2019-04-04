@@ -52,23 +52,11 @@ public class ExecuteVotePhase implements Phase {
     }
 
     /**
-     * 처형 투표 중에는 유저를 선택한 경우, 찬/반 투표가 이루어 짐
+     * 처형 투표 중에는 별다른 작업을 하지 않음
      */
     @Override
     public void selectUserExecute(User user, String targetUserId) {
         System.out.println(this.getClass().getSimpleName() + ".selectUserExecute() " + user.getUserId() + ", " + targetUserId);
-
-        // Phase 중 1회만 찬/반 투표 가능
-        if(!user.getUserGameState().getVoteContext().isExecuteVoteActivate())
-            return;
-
-        // 가장 투표를 많이 받은 유저에 대해 exectueVote 카운트를 올림
-        User mostVotedUser = user.getGameRoom().getGameContext().getMostMafiaVotedUser();
-        mostVotedUser.getUserGameState().getVoteContext().executeVote();
-
-        // ExecuteVote의 경우 Phase 당 1회만 가능
-        user.getUserGameState().getVoteContext().setExecuteVoteActivate(false);
-
     }
 
 }

@@ -49,9 +49,6 @@ public class MafiaVotePhase implements Phase {
         else
             phaseTimer.setPhase(ArgumentPhase.getInstance());
 
-        // 투표 결과 초기화
-        for(User user : gameContext.getSurvivorUserList())
-            user.getUserGameState().getVoteContext().init();
     }
 
     /**

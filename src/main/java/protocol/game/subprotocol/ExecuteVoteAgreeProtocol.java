@@ -21,8 +21,8 @@ public class ExecuteVoteAgreeProtocol extends GameProtocol {
             return;
 
         // 가장 투표를 많이 받은 유저에 대해 exectueVote 카운트를 올림
-        User mostVotedUser = user.getGameRoom().getGameContext().getMostMafiaVotedUser();
-        mostVotedUser.getUserGameState().getVoteContext().executeVote();
+        User mostMafiaVotedUser = user.getGameRoom().getGameContext().getMostMafiaVotedUser();
+        mostMafiaVotedUser.getUserGameState().getVoteContext().executeVote();
 
         // ExecuteVote의 경우 Phase 당 1회만 가능
         user.getUserGameState().getVoteContext().setExecuteVoteActivate(false);

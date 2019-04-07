@@ -1,4 +1,6 @@
 package game.job.mafia;
 
-public class MafiaTeam {
+import game.job.Team;
+
+public class MafiaTeam extends Team {
 }

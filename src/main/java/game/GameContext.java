@@ -85,9 +85,15 @@ public class GameContext {
 			if (userJob instanceof MafiaTeam) mafiaTeamSurvivorCount++;
 		}
 
-		// 마피아 팀 생존자 수 >= 시민 팀 생존자 수 인 경우 게임종료
+		// '마피아 팀 생존자 수 >= 시민 팀 생존자 수' 마피아팀 승리
 		if(mafiaTeamSurvivorCount >= civilTeamSurvivorCount) {
-			this.gameOver(new GameResult());
+			this.gameOver(new GameResult(MafiaTeam.class));
+			return true;
+		}
+		
+		// '마피아 팀 생존자 수 <= 0' 인 경우 시민팀 승리
+		if (mafiaTeamSurvivorCount <= 0) {
+			this.gameOver(new GameResult(CivilTeam.class));
 			return true;
 		}
 
@@ -149,7 +155,7 @@ public class GameContext {
 		List<User> survivorUserList = new ArrayList<>();
 		
 		for (User user : this.getGameRoom().getLoginUserList()) {
-			if (user.isAlive())
+			if (user.isUserAlive())
 				survivorUserList.add(user);
 		}
 		

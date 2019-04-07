@@ -11,6 +11,7 @@ import java.net.Socket;
 
 /**
  * 소켓 접속 유저 클래스
+ * TODO : User를 Thread를 상속받지 않고 Runnable 인터페이스를 구현하도록 변경
  */
 public class User extends Thread {
 	private GameRoom 				gameRoom; 				// 유저가 접속한 GameRoom
@@ -52,6 +53,11 @@ public class User extends Thread {
         job.setUser(this);
         this.userGameState.setJob(job);
         return this;
+    }
+    
+    // User가 Thread를 상속받는데, isAlive()가 겹쳐서 네이밍을 다르게 줌
+    public boolean isUserAlive() {
+    	return this.userGameState.isAlive();
     }
 
     /**

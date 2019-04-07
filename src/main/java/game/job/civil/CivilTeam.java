@@ -1,4 +1,6 @@
 package game.job.civil;
 
-public class CivilTeam {
+import game.job.Team;
+
+public class CivilTeam extends Team {
 }

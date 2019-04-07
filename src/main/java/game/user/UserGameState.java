@@ -14,7 +14,6 @@ public class UserGameState {
 	UserGameState() {
 		this.voteContext = new VoteContext();
 		this.flagContext = new FlagContext();
-		this.init();
 	}
 
 	/**

@@ -47,6 +47,7 @@ public class GameContext {
 		phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
 		phaseTimer.setGameContext(this);
 		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
+		this.initUserState();
 		this.initAllocableJobList();
 		this.allocJob();
 		phaseTimer.start();
@@ -100,6 +101,14 @@ public class GameContext {
 		return false;
 	}
 
+	/**
+	 * 유저상태 초기화
+	 */
+	private void initUserState() {
+		for (User user : this.gameRoom.getLoginUserList()) {
+			user.getUserGameState().init();
+		}
+	}
 	/**
 	 * 유저에게 할당될 수 있는 직업 리스트를 선정해서 allocableJobList에 저장
 	 */

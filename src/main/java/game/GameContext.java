@@ -12,11 +12,9 @@ import game.phase.NightPhase;
 import game.user.User;
 import protocol.Protocol;
 import protocol.game.subprotocol.JobAllocationProtocol;
+import protocol.system.subprotocol.EndgameProtocol;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 게임 진행과 관련된 정보 및 로직을 가지는 클래스
@@ -27,6 +25,7 @@ public class GameContext {
 	private List<Job> 	allocableJobList; 	// 유저에게 할당 가능한 직업 리스트
 	private GameRoom 	gameRoom; 			// 해당 GameContext를 가지고 있는 GameRoom
 	private PhaseTimer 	phaseTimer;			// Phase를 진행시키는 타이머
+	private GameResult 	gameResult;         // 게임 결과를 저장
 
 	GameContext(GameRoom gameRoom) {
 		this.gameRoom = gameRoom;
@@ -44,6 +43,7 @@ public class GameContext {
 	 */
 	void gameStart() {
 		this.isPlaying = true; //게임중으로 표시
+		gameResult = new GameResult();
 		phaseTimer = new PhaseTimer(); // Phase를 진행시키는 타이머 초기화
 		phaseTimer.setGameContext(this);
 		phaseTimer.setPhase(NightPhase.getInstance()); // 초기 Phase는 NightPhase로 설정
@@ -63,9 +63,18 @@ public class GameContext {
 
 	/**
 	 * 게임 종료 처리
-	 * @param gameResult GameResult 게임 결과정보를 담은 객체 
 	 */
-	private void gameOver(GameResult gameResult) {
+	private void gameOver() {
+		Map<String, String> userJobMap = gameResult.getUserJobMap();
+		StringBuilder userJobMapString = new StringBuilder();
+
+		for (String userId : userJobMap.keySet()) {
+			userJobMapString.append(userId + " : " + userJobMap.get(userId) + "\n");
+		}
+		Protocol protocol = new EndgameProtocol()
+								.setWinTeam(gameResult.getWinTeam().getSimpleName())
+								.setUserJobMap(userJobMapString.toString());
+		gameRoom.sendProtocol(protocol);
 		this.isPlaying = false;
 	}
 
@@ -88,13 +97,15 @@ public class GameContext {
 
 		// '마피아 팀 생존자 수 >= 시민 팀 생존자 수' 마피아팀 승리
 		if(mafiaTeamSurvivorCount >= civilTeamSurvivorCount) {
-			this.gameOver(new GameResult(MafiaTeam.class));
+			gameResult.setWinTeam(MafiaTeam.class);
+			this.gameOver();
 			return true;
 		}
 		
 		// '마피아 팀 생존자 수 <= 0' 인 경우 시민팀 승리
 		if (mafiaTeamSurvivorCount <= 0) {
-			this.gameOver(new GameResult(CivilTeam.class));
+			gameResult.setWinTeam(CivilTeam.class);
+			this.gameOver();
 			return true;
 		}
 
@@ -148,9 +159,11 @@ public class GameContext {
 	 */
 	private void allocJob() {
 		List<User> loginUserList = gameRoom.getLoginUserList();
+
 		for (User user : loginUserList) {
 			Job job = this.allocableJobList.remove(0);
 			user.setJob(job);
+			gameResult.addUserJobMap(user.getUserId(), job.getClass().getSimpleName());
 			Protocol protocol = new JobAllocationProtocol().setJobName(job.getClass().getSimpleName());
 			user.sendProtocol(protocol);
 		}

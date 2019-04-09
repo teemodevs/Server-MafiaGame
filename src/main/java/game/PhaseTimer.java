@@ -44,11 +44,6 @@ public class PhaseTimer extends Thread {
             phaseTimer.start();
         }
 
-        // 게임이 끝난 경우
-        else {
-            Protocol endGameProtocol = new EndgameProtocol();
-            this.gameContext.getGameRoom().sendProtocol(endGameProtocol);
-        }
     }
 
     public void setPhase(Phase phase) {

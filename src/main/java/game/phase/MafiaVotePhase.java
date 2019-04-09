@@ -6,6 +6,7 @@ import game.user.User;
 import game.user.VoteContext;
 import protocol.Protocol;
 import protocol.game.subprotocol.MafiaVoteCountProtocol;
+import protocol.game.subprotocol.MostMafiaVotedUserProtocol;
 
 import java.util.List;
 
@@ -48,8 +49,14 @@ public class MafiaVotePhase implements Phase {
             phaseTimer.setPhase(NightPhase.getInstance());
         
         // 투표 유효인 경우 Argument Phase로 세팅
-        else
+        else {
+            User mostMafiaVotedUser = phaseTimer.getGameContext().getMostMafiaVotedUser();
+            Protocol protocol = new MostMafiaVotedUserProtocol()
+                                    .setUserId(mostMafiaVotedUser.getUserId())
+                                    .setMafiaVoteCount(mostMafiaVotedUser.getUserGameState().getVoteContext().getMafiaVotedCount());
+            mostMafiaVotedUser.getGameRoom().sendProtocol(protocol);
             phaseTimer.setPhase(ArgumentPhase.getInstance());
+        }
 
     }
 

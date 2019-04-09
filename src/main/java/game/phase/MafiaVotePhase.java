@@ -4,6 +4,8 @@ import game.GameContext;
 import game.PhaseTimer;
 import game.user.User;
 import game.user.VoteContext;
+import protocol.Protocol;
+import protocol.game.subprotocol.MafiaVoteCountProtocol;
 
 import java.util.List;
 
@@ -69,6 +71,10 @@ public class MafiaVotePhase implements Phase {
 
         // 지정된 유저의 마피아 투표 진행
         targetUser.getUserGameState().getVoteContext().mafiaVote();
+        Protocol protocol = new MafiaVoteCountProtocol()
+                                .setUserId(targetUser.getUserId())
+                                .setMafiaVoteCount(targetUser.getUserGameState().getVoteContext().getMafiaVotedCount());
+        user.getGameRoom().sendProtocol(protocol);
 
         // 마피아 투표 당 1회만 가능하므로, 투표하는 유저의 마피아 투표를 더 이상 불가능하게 함
         voteUserVoteContext.setMafiaVoteActivate(false);

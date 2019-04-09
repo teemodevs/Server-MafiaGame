@@ -4,7 +4,7 @@ import game.user.User;
 import protocol.game.GameProtocol;
 
 /**
- * 서버 to 클라 : 마피아 투표 직후, 투표가 유효한 경우 가장 많이 투표를 받은 유저에 대해 현재 투표 수를
+ * 서버 to 클라 : 마피아 투표 직후, 투표가 유효한 경우 가장 많이 투표를 받은 유저의 Id와 투표수를 알려줌
  * 클라 to 서버 : -
  */
 public class MostMafiaVotedUserProtocol extends GameProtocol {

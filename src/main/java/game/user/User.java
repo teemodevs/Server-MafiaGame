@@ -4,22 +4,24 @@ import game.GameRoom;
 import game.job.Job;
 import message.MessageSenderReceiver;
 import protocol.Protocol;
+import protocol.game.subprotocol.UserDeadProtocol;
 import protocol.system.subprotocol.LogoutProtocol;
 
 import java.net.Socket;
 
 /**
  * 소켓 접속 유저 클래스
+ * TODO : User를 Thread를 상속받지 않고 Runnable 인터페이스를 구현하도록 변경
  */
 public class User extends Thread {
 	private GameRoom 				gameRoom; 				// 유저가 접속한 GameRoom
     private String 					userId; 				// 유저  id
     private UserGameState 			userGameState; 			// 유저 게임 상태 저장
-    private Job 					job;					// 현재 유저 직업
     private MessageSenderReceiver 	messageSenderReceiver;	// 메시시 송수신용
 
     public User(Socket socket) {
         this.messageSenderReceiver = new MessageSenderReceiver(socket);
+        this.userGameState = new UserGameState();
     }
 
     public void setGameRoom(GameRoom gameRoom) {
@@ -43,18 +45,19 @@ public class User extends Thread {
 		return userGameState;
 	}
 
-	public User setUserGameState(UserGameState userGameState) {
-		this.userGameState = userGameState;
-		return this;
-	}
-
     public Job getJob() {
-        return job;
+        return userGameState.getJob();
     }
 
     public User setJob(Job job) {
-        this.job = job;
+        job.setUser(this);
+        this.userGameState.setJob(job);
         return this;
+    }
+    
+    // User가 Thread를 상속받는데, isAlive()가 겹쳐서 네이밍을 다르게 줌
+    public boolean isUserAlive() {
+    	return this.userGameState.isAlive();
     }
 
     /**
@@ -88,5 +91,14 @@ public class User extends Thread {
     	}
     	
         this.interrupt();
+    }
+
+    /**
+     * 유저 죽음 처리
+     */
+    public void dead() {
+        this.getUserGameState().setAlive(false);
+        Protocol protocol = new UserDeadProtocol().setKilledUserId(this.getUserId());
+        this.gameRoom.sendProtocol(protocol);
     }
 }

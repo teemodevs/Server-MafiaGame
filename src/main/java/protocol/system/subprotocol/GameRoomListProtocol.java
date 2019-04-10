@@ -1,10 +1,10 @@
 package protocol.system.subprotocol;
 
-import java.util.List;
-
 import game.GameRoomManager;
 import game.user.User;
 import protocol.system.SystemProtocol;
+
+import java.util.List;
 
 /**
  * 서버 to 클라 : 해당 유저에게 접속 가능한 GameRoom의 리스트를 반환

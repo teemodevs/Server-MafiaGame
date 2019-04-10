@@ -4,6 +4,7 @@ import game.user.User;
 import protocol.game.GameProtocol;
 
 /**
+ * 직업 할당 관련 프로토콜
  * 서버 to 클라 : 유저에게 할당된 직업을 통보
  * 클라 to 서버 : -
  */

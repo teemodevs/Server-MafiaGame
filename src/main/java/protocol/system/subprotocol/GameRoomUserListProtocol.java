@@ -1,11 +1,11 @@
 package protocol.system.subprotocol;
 
-import java.util.List;
-
 import game.GameRoom;
-import game.GameRoomManager;
 import game.user.User;
 import protocol.system.SystemProtocol;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 서버 to 클라 : 현재 게임방에 접속 유저의 리스트를 반환
@@ -30,7 +30,13 @@ public class GameRoomUserListProtocol extends SystemProtocol {
         System.out.println(this.getClass().getSimpleName() + ".execute()");
         GameRoom gameRoom = user.getGameRoom();
 
-        this.userIdList = gameRoom.getLoginUserStringList();
+		List<User> loginUserList = gameRoom.getLoginUserList();
+		List<String> loginUserIdStringList = new ArrayList<>();
+
+		for (User userElement : loginUserList)
+			loginUserIdStringList.add(userElement.getUserId());
+
+        this.userIdList = loginUserIdStringList;
         user.sendProtocol(this);
     }
 }

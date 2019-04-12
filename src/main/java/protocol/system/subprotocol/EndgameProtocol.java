@@ -1,34 +1,23 @@
 package protocol.system.subprotocol;
 
+import game.GameResult;
 import game.user.User;
 import protocol.system.SystemProtocol;
-
-import java.util.Map;
 
 /**
  * 서버 to 클라 : 모든 유저에게 게임이 끝났다고 알림
  * 클라 to 서버 : -
  */
 public class EndgameProtocol extends SystemProtocol {
-    private String winTeam;
-    private String userJobMap;
+    private GameResult gameResult;
 
-    public String getWinTeam() {
-        return winTeam;
-    }
-
-    public EndgameProtocol setWinTeam(String winTeam) {
-        this.winTeam = winTeam;
+    public EndgameProtocol setGameResult(GameResult gameResult) {
+        this.gameResult = gameResult;
         return this;
     }
 
-    public String getUserJobMap() {
-        return userJobMap;
-    }
-
-    public EndgameProtocol setUserJobMap(String userJobMap) {
-        this.userJobMap = userJobMap;
-        return this;
+    public GameResult getGameResult() {
+        return this.gameResult;
     }
 
     @Override

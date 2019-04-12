@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class GameResult {
 	private Class<? extends Object> winTeam; 	// 이긴 팀
-	private Map<String, String> 	userJobMap;	// 유저의 직업 정보
+	private Map<String, String> 	userJobMap;	// 유저id - 유저의 직업
 
 	GameResult() {
 		userJobMap = new HashMap<>();

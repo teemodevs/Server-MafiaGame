@@ -71,9 +71,7 @@ public class GameContext {
 		for (String userId : userJobMap.keySet()) {
 			userJobMapString.append(userId + " : " + userJobMap.get(userId) + "\n");
 		}
-		Protocol protocol = new EndgameProtocol()
-								.setWinTeam(gameResult.getWinTeam().getSimpleName())
-								.setUserJobMap(userJobMapString.toString());
+		Protocol protocol = new EndgameProtocol().setGameResult(gameResult);
 		gameRoom.sendProtocol(protocol);
 		this.isPlaying = false;
 	}

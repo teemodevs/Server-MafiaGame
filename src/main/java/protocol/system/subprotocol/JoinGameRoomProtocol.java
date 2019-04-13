@@ -12,6 +12,7 @@ import protocol.system.SystemProtocol;
 public class JoinGameRoomProtocol extends SystemProtocol {
 	private String 			userId;				// 요청한 유저의 id
 	private int 			gameRoomNumber;		// 유저가 요청한 방의 번호
+	private String			gameRoomName;		// 유저가 요청한 방의 제목
 	private boolean 		isJoinSuccess;		// 게임방 입장 성공 여부
 	private String 			joinFailedReason;	// 게임방 입장 실패 시 이유
 	
@@ -30,6 +31,15 @@ public class JoinGameRoomProtocol extends SystemProtocol {
 
 	public JoinGameRoomProtocol setGameRoomNumber(int gameRoomNumber) {
 		this.gameRoomNumber = gameRoomNumber;
+		return this;
+	}
+
+	public String getGameRoomName() {
+		return gameRoomName;
+	}
+
+	public JoinGameRoomProtocol setGameRoomName(String gameRoomName) {
+		this.gameRoomName = gameRoomName;
 		return this;
 	}
 
@@ -80,6 +90,7 @@ public class JoinGameRoomProtocol extends SystemProtocol {
         if (this.isJoinSuccess) {
 	        gameRoom.addUser(user);
 	        this.userId = user.getUserId();
+	        this.gameRoomName = gameRoom.getGameRoomName();
         }
         
         user.sendProtocol(this);

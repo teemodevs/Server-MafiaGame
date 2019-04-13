@@ -1,8 +1,6 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,13 +22,13 @@ public class GameRoomManager {
 	/**
 	 * 방 만들기
 	 */
-	public GameRoom makeGameRoom() {
+	public GameRoom makeGameRoom(String gameRoomName) {
 		
 		GameRoom newGameRoom = null;
 		
 		for (int index = 0; index <= this.gameRoomMap.size(); index++) {
 			if (!this.gameRoomMap.containsKey(index)) {
-				newGameRoom = new GameRoom(index);
+				newGameRoom = new GameRoom(index, gameRoomName);
 				this.gameRoomMap.put(index, newGameRoom);
 				break;
 			}
@@ -47,18 +45,18 @@ public class GameRoomManager {
 	}
 	
 	/**
-	 * 유저가 참여할 수 있는 방 번호 리스트 반환
+	 * 유저가 참여할 수 있는 방 맵 반환
 	 */
-	public List<Integer> getJoinableGameRoomNumberList() {
-		List<Integer> joinableGameRoomNumberList = new ArrayList<>();
+	public Map<Integer, String> getJoinableGameRoomMap() {
+		Map<Integer, String> joinableGameRoomMap = new HashMap<>();
 		
 		for(int index : this.gameRoomMap.keySet()) {
 			GameRoom gameRoom = this.gameRoomMap.get(index);
 			if (!gameRoom.isPlaying())
-				joinableGameRoomNumberList.add(gameRoom.getGameRoomNumber());
+				joinableGameRoomMap.put(gameRoom.getGameRoomNumber(), gameRoom.getGameRoomName());
 		}
 		
-		return joinableGameRoomNumberList;
+		return joinableGameRoomMap;
 	}
 	
 	/**

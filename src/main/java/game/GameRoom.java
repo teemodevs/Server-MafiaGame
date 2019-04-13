@@ -12,14 +12,16 @@ import java.util.*;
  */
 public class GameRoom {
 	private int gameRoomNumber;
+	private String gameRoomName;
 	private User roomMaster; // 방장 User
     private Map<String, User> connectedUserMap; // 접속한 모든 유저의 Map
     private GameContext gameContext; // 게임 정보 및 로직 관련
     
-    public GameRoom(int gameRoomNumber) {
+    public GameRoom(int gameRoomNumber, String gameRoomName) {
     	gameContext = new GameContext(this);
         connectedUserMap = new HashMap<>();
         this.gameRoomNumber = gameRoomNumber;
+        this.gameRoomName = gameRoomName;
     }
 
 	public GameContext getGameContext() {
@@ -35,6 +37,7 @@ public class GameRoom {
     
     /**
      * 현재 GameRoom의 방장 User 객체 리턴
+	 * @return roomMaster User 현재 GameRoom의 방장 User 객체
      */
     public User getMasterUser() {
     	return this.roomMaster;
@@ -42,13 +45,23 @@ public class GameRoom {
     
     /**
      * 현재 GameRoom의 방 번호 리턴
+	 * @return gameRoomNumber 현재 GameRoom 방 번호
      */
     public int getGameRoomNumber() {
-		return gameRoomNumber;
+		return this.gameRoomNumber;
 	}
-    
+
+	/**
+	 * 현재 GameRoom의 방 제목 리턴
+	 * @return gameRoomName String 현재 GameRoom 방 제목
+	 */
+	public String getGameRoomName() {
+		return this.gameRoomName;
+	}
+
     /**
      * 유저를 해당 GameRoom에 추가, 첫 유저일 경우 방장으로 지정
+	 * @param user User GameRoom에 입장하는 유저 객체
      */
     public void addUser(User user) {
     	connectedUserMap.put(user.getUserId(), user);
@@ -61,7 +74,8 @@ public class GameRoom {
 
     /**
 	 * 특정 방에 존재하는 모든 유저에게 특정 유저가 들어왔다는 것을 알림
-	 * */
+	 * @param joinedUser User GameRoom에 접속한 유저 객체
+	 */
     private void notifyToAllUsers(User joinedUser) {
     	for(String userId : this.connectedUserMap.keySet()) {
     		User user = this.connectedUserMap.get(userId);
@@ -72,22 +86,24 @@ public class GameRoom {
     }
     
     /**
-     * 처음 입장한 유저인 경우 방장이라고 알림 
+     * 처음 입장한 유저인 경우 방장이라고 알림
+	 * @param joinedUser User GameRoom에 처음 입장한 유저
      */
-    private void notifyIfMaster(User user) {
+    private void notifyIfMaster(User joinedUser) {
     	if (connectedUserMap.size() == 1) {
-    		this.roomMaster = user;
+    		this.roomMaster = joinedUser;
     		Protocol protocol = new RoomMasterProtocol()
-    								.setMasterId(user.getUserId());
+    								.setMasterId(joinedUser.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}
     }
 
     /**
      * 유저를 해당 GameRoom에서 삭제, 방장이 나간 경우 방장 재설정
+	 * @param exitUser User GameRoom에서 나간 유저
      */
-    public void deleteUser(User user) {
-    	this.connectedUserMap.remove(user.getUserId());
+    public void deleteUser(User exitUser) {
+    	this.connectedUserMap.remove(exitUser.getUserId());
     	
     	// 마지막 유저가 나간 경우는 GameRoom 삭제
     	if (this.connectedUserMap.size() == 0) {
@@ -96,7 +112,7 @@ public class GameRoom {
     	}
     	
     	// 방장이 나간 경우 아무나 방장 선정
-    	if (this.roomMaster.getUserId().equals(user.getUserId())) {
+    	if (this.roomMaster.getUserId().equals(exitUser.getUserId())) {
     		Random random = new Random();
     		List<String> userMapKeyList = new ArrayList<>(this.connectedUserMap.keySet());
     		String randomUserKey = userMapKeyList.get(random.nextInt(userMapKeyList.size()));
@@ -104,17 +120,24 @@ public class GameRoom {
     		this.roomMaster = this.connectedUserMap.get(randomUserKey);
     		
     		Protocol protocol = new RoomMasterProtocol()
-					.setMasterId(user.getUserId());
+					.setMasterId(exitUser.getUserId());
     		this.roomMaster.sendProtocol(protocol);
     	}
         
     }
 
+    /**
+	 * UserId를 바탕으로 GameRoom에 접속한 User객체를 얻음
+	 * @param userId String 찾을 User 객체에 대한 UserId
+	 * @return user User 찾은 User 객체
+	 */
     public User getUserById(String userId) {
     	return this.connectedUserMap.get(userId);
 	}
+
     /**
      * 모든 유저에게 Protocol을 전송
+	 * @param protocol Protocol 모든 유저에게 전송 할 프로토콜
      */
     public void sendProtocol(Protocol protocol) {
         for( String userId : connectedUserMap.keySet() )
@@ -122,7 +145,8 @@ public class GameRoom {
     }
 
 	/**
-	 * 현재 GameRoom에서 로그인한 유저 리스트를 반환
+	 * 현재 GameRoom에 로그인한 유저 리스트를 반환
+	 * @return userList List<User> GameRoom에 로그인한 유저 리스트
 	 */
 	public List<User> getLoginUserList() {
 		return new ArrayList<>(this.connectedUserMap.values());
@@ -137,6 +161,7 @@ public class GameRoom {
     
     /**
      * 현재 GameRoom 게임중 여부
+	 * @return isPlaying boolean 현재 GameRoom 게임중 여부
      */
     public boolean isPlaying() {
     	return gameContext.isPlaying();
